@@ -1,18 +1,27 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import SignInLink from './SignInLink';
 import SignOutLink from './SignOutLink';
+import { connect } from 'react-redux';
 
-const Navbar = () => {
+const Navbar = (props) => {
+  const { auth } = props;
+  const links = auth.uid ? <SignInLink /> : <SignOutLink />
   return(
     <nav className="nav-wrapper grey darkness-3">
       <div className="container">
         <Link to='/' className="brand-logo">HaHaApp</Link>
-        <SignInLink />
-        <SignOutLink />
+        { links }
       </div>
     </nav>
   )
 }
 
-export default Navbar;
+const mapStateToProps = (state) => {
+  console.log(state)
+  return{
+    auth: state.firebase.auth
+  }
+}
+
+export default connect(mapStateToProps)(Navbar);
